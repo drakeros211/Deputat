@@ -28,7 +28,7 @@ def eyes(emo):
     pup_r, pdx, pdy = 19, 4, 4
     lid = 0  # опущенное веко (0..1)
     brow = dict(neutral=(0, 0), scared=(-22, 14), shocked=(-30, 0),
-                smirk=(-4, -6), tired=(6, -10), angry=(10, -18))[emo]
+                smirk=(-4, -6), tired=(6, -10), angry=(10, -18), side=(-16, 8))[emo]
     if emo == "scared":
         pup_r, pdx, pdy = 9, -6, 2
         ry = 52
@@ -41,6 +41,8 @@ def eyes(emo):
         lid = 0.45; pdy = 10
     if emo == "angry":
         lid = 0.2; pup_r = 16
+    if emo == "side":
+        pup_r, pdx, pdy = 13, -22, -2
     for i, (cx, cy) in enumerate((L, R)):
         cid = f"eyeclip{i}{emo}"
         out.append(f'<clipPath id="{cid}"><ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}"/></clipPath>')
@@ -83,6 +85,8 @@ def mouth(emo):
     if emo == "shocked":
         return (f'<ellipse cx="512" cy="628" rx="26" ry="34" fill="#5a2228" stroke="{l}" stroke-width="{LW}"/>'
                 f'<ellipse cx="512" cy="646" rx="15" ry="10" fill="#c45a5f"/>')
+    if emo == "side":
+        return f'<path d="M482 622 q20 -8 34 2 q14 8 32 -8" fill="none" stroke="{l}" stroke-width="{LW+1}" stroke-linecap="round"/>'
     if emo == "smirk":
         return f'<path d="M476 618 q40 10 76 -18" fill="none" stroke="{l}" stroke-width="{LW+1}" stroke-linecap="round"/>'
     if emo == "tired":
