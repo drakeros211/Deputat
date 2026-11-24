@@ -58,18 +58,19 @@ SCENES = [
     dict(id="end", pre=1.8, post=0.0, lines=[
         ("T", "Если досмотрел, значит, ты тоже не спишь.", "Если досмотрел, значит, ты тоже не с", 0, None)]),
 ]
-END_CUT_FRACTION = 0.84   # последнюю фразу обрываем на полуслове
+END_CUT_FRACTION = 0.93   # последнюю фразу обрываем на полуслове
 TAIL_BLACK = 0.7
 
-# Голоса: модель, скорость (length_scale), сдвиг высоты
+# Голоса (Microsoft Edge TTS): голос, скорость, высота; shift — доп. сдвиг высоты после синтеза
 VOICE = {
-    "T":    dict(model="dmitri", speed=1.18, pitch=1.13),
-    "T_wh": dict(model="dmitri", speed=1.02, pitch=1.10),
-    "L":    dict(model="ruslan", speed=1.15, pitch=1.04),
-    "L_sc": dict(model="ruslan", speed=1.05, pitch=1.06),
-    "L_cr": dict(model="ruslan", speed=0.88, pitch=0.80),
-    "L_wh": dict(model="ruslan", speed=0.95, pitch=0.97),
+    "T":    dict(voice="en-US-BrianMultilingualNeural", rate="+22%", pitch="+25Hz", shift=1.0),
+    "T_wh": dict(voice="en-US-BrianMultilingualNeural", rate="+10%", pitch="+20Hz", shift=1.0),
+    "L":    dict(voice="en-US-AndrewMultilingualNeural", rate="+18%", pitch="+0Hz", shift=1.0),
+    "L_sc": dict(voice="en-US-AndrewMultilingualNeural", rate="+15%", pitch="+8Hz", shift=1.0),
+    "L_cr": dict(voice="en-US-AndrewMultilingualNeural", rate="-5%", pitch="+0Hz", shift=0.8),
+    "L_wh": dict(voice="en-US-AndrewMultilingualNeural", rate="+5%", pitch="+0Hz", shift=1.0),
 }
+EDGE = os.environ.get("EDGE_TTS", "edge-tts")
 
 # ---------------------------------------------------------------- DSP-утилиты
 def sos(kind, f, order=2):
@@ -119,34 +120,25 @@ def write_wav(p, x):
 
 
 # ---------------------------------------------------------------- TTS
-_tts = {}
-
-
-def tts_engine(model):
-    if model not in _tts:
-        import sherpa_onnx
-        d = f"{VOICES}/vits-piper-ru_RU-{model}-medium"
-        cfg = sherpa_onnx.OfflineTtsConfig(model=sherpa_onnx.OfflineTtsModelConfig(
-            vits=sherpa_onnx.OfflineTtsVitsModelConfig(model=f"{d}/ru_RU-{model}-medium.onnx",
-                                                       tokens=f"{d}/tokens.txt", data_dir=f"{d}/espeak-ng-data"),
-            num_threads=4))
-        _tts[model] = sherpa_onnx.OfflineTts(cfg)
-    return _tts[model]
-
-
 def synth(voice, text):
     v = VOICE[voice]
     key = hashlib.md5(f"{voice}|{text}|{v}".encode()).hexdigest()[:12]
     out = f"{BUILD}/tts/{voice}_{key}.wav"
     if not os.path.exists(out):
-        raw = out.replace(".wav", "_raw.wav")
-        a = tts_engine(v["model"]).generate(text, sid=0, speed=v["speed"])
-        s = np.array(a.samples)
-        w = wave.open(raw, "w"); w.setnchannels(1); w.setsampwidth(2); w.setframerate(a.sample_rate)
-        w.writeframes((np.clip(s, -1, 1) * 32767).astype("<i2").tobytes()); w.close()
-        p = v["pitch"]
+        mp3 = out.replace(".wav", ".mp3")
+        env = dict(os.environ, SSL_CERT_FILE=os.environ.get("SSL_CERT_FILE", "/root/.ccr/ca-bundle.crt"))
+        cmd = [EDGE, "--voice", v["voice"], f"--rate={v['rate']}", f"--pitch={v['pitch']}", "--text", text, "--write-media", mp3]
+        if os.environ.get("HTTPS_PROXY"):
+            cmd[1:1] = ["--proxy", os.environ["HTTPS_PROXY"]]
+        for attempt in range(4):
+            r = subprocess.run(cmd, env=env, capture_output=True, text=True)
+            if r.returncode == 0 and os.path.getsize(mp3) > 1000:
+                break
+        else:
+            raise RuntimeError(f"edge-tts failed for {voice}: {r.stderr[-300:]}")
+        p = v["shift"]
         af = f"rubberband=pitch={p}:formant=preserved,aresample={SR}" if p != 1 else f"aresample={SR}"
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", raw, "-af", af, "-ac", "1", out], check=True)
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", mp3, "-af", af, "-ac", "1", out], check=True)
     x = read_wav(out)
     # обрезка тишины по краям
     idx = np.where(np.abs(x) > 0.01)[0]
@@ -155,7 +147,7 @@ def synth(voice, text):
     # обработка по типу голоса
     if voice == "T_wh" or voice == "L_wh":
         x = hp(x, 300) * 0.9
-        x = x + hp(lp(noise(len(x) / SR), 6000), 2500) * np.abs(lp(np.abs(x), 30)) * 1.5  # «шёпотный» воздух
+        x = x + hp(lp(rng.standard_normal(len(x)), 6000), 2500) * np.abs(lp(np.abs(x), 30)) * 1.5  # «шёпотный» воздух
         x = reverb(x, 0.8, 0.25)
     elif voice == "L_cr":
         low = subprocess.run  # placeholder to keep flake quiet

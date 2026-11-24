@@ -1,9 +1,9 @@
 #!/bin/bash
 # Полная сборка серии: звук -> графика -> кадры -> mp4.
-# Использование: VOICES=<папка с голосами Piper> PY=<python с sherpa-onnx и scipy> ./make.sh
+# Использование: PY=<python с edge-tts и scipy> EDGE_TTS=<путь к edge-tts> ./make.sh
 set -e
 cd "$(dirname "$0")"
-${PY:-python3} audio.py "$VOICES"
+EDGE_TTS=${EDGE_TTS:-edge-tts} ${PY:-python3} audio.py
 python3 assets.py
 node render.js --workers 4
 ffmpeg -v error -y -f concat -safe 0 -i build/parts.txt -c copy build/video_noaudio.mp4
