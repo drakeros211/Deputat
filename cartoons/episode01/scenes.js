@@ -13,7 +13,7 @@ const wob = (t, s = 0) => Math.sin(t * 1.7 + s) * .5 + Math.sin(t * 3.1 + s * 2)
 let uid = 0; const id = p => `${p}${uid++}`;
 
 function sceneAt(t) { for (const s of TL.scenes) if (t >= s.start && t < s.end) return s; return TL.scenes[TL.scenes.length - 1]; }
-function shotAt(s, t) { let cur = null; for (const sh of s.shots) if (t >= sh.start) cur = sh; return cur; }
+function shotAt(s, t) { let cur = s.shots[0] || null; for (const sh of s.shots) if (t >= sh.start) cur = sh; return cur; }
 function linesOf(sid) { return TL.lines.filter(l => l.scene === sid); }
 
 // ------------------------------------------------------------ персонажи
