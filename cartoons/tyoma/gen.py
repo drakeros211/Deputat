@@ -28,7 +28,7 @@ def eyes(emo):
     pup_r, pdx, pdy = 19, 4, 4
     lid = 0  # опущенное веко (0..1)
     brow = dict(neutral=(0, 0), scared=(-22, 14), shocked=(-30, 0),
-                smirk=(-4, -6), tired=(6, -10), angry=(10, -18), side=(-16, 8))[emo]
+                smirk=(-4, -6), tired=(6, -10), angry=(10, -18), side=(-16, 8), happy=(-14, -12))[emo]
     if emo == "scared":
         pup_r, pdx, pdy = 9, -6, 2
         ry = 52
@@ -85,6 +85,10 @@ def mouth(emo):
     if emo == "shocked":
         return (f'<ellipse cx="512" cy="628" rx="26" ry="34" fill="#5a2228" stroke="{l}" stroke-width="{LW}"/>'
                 f'<ellipse cx="512" cy="646" rx="15" ry="10" fill="#c45a5f"/>')
+    if emo == "happy":
+        return (f'<path d="M462 604 q50 20 100 0 q-6 62 -50 62 q-44 0 -50 -62z" fill="#5a2228" stroke="{l}" stroke-width="{LW}" stroke-linejoin="round"/>'
+                f'<path d="M470 608 q42 14 84 0 l-2 14 q-40 12 -80 0z" fill="#fff"/>'
+                f'<ellipse cx="514" cy="648" rx="24" ry="11" fill="#d9666b"/>')
     if emo == "side":
         return f'<path d="M482 622 q20 -8 34 2 q14 8 32 -8" fill="none" stroke="{l}" stroke-width="{LW+1}" stroke-linecap="round"/>'
     if emo == "smirk":
