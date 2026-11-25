@@ -25,60 +25,56 @@ def Ln(voice, text, sub=None, gap=0.0, shots=None, meter=None):
 # ---------------------------------------------------------------- СЦЕНАРИЙ «Глубинный»
 SCENES = [
     dict(id="hook", pre=1.0, post=0.3, shots0=["alert"], lines=[
-        Ln("T_wh", "Оно смотрит прямо на наш дом.", None, 0, ["alert_shake"])]),
+        Ln("T_wh", "[whispers] Оно смотрит прямо на наш дом.", None, 0, ["alert_shake"])]),
     dict(id="flash", pre=1.3, post=0, shots0=["chance7"], lines=[]),
     dict(id="rewind", pre=1.5, post=0, shots0=["rewind"], lines=[]),
     dict(id="calm", pre=0.2, post=0.2, lines=[
-        Ln("T", "Всё началось с рыбы.", None, 0.1, ["fish"]),
+        Ln("T", "[thoughtful] Всё началось с рыбы.", None, 0.1, ["fish"]),
         Ln("T", "Тысячи дохлых рыб на берегу водохранилища.", None, 0.2, ["fish_close"]),
         Ln("R", "Сейсмологи фиксируют слабые толчки. Повода для паники нет.", None, 0.2, ["radio_city"]),
-        Ln("T", "А вода у меня в кружке... шла кругами.", None, 0.2, ["cup"]),
-        Ln("L", "Бро, это просто грузовик проехал.", None, 0, ["lyoha_kitchen"])]),
+        Ln("T", "[nervous] А вода у меня в кружке... шла кругами.", None, 0.2, ["cup"]),
+        Ln("L", "[laughs] Бро, это просто грузовик проехал.", None, 0, ["lyoha_kitchen"])]),
     dict(id="night", pre=0.2, post=0.3, lines=[
-        Ln("T", "Ночью мы пошли на набережную. Снять светящуюся воду.", None, 0.15, ["embank", "glow_water"]),
-        Ln("T", "Вода и правда светилась. Изнутри.", None, 0.4, ["glow_close"]),
-        Ln("L", "Тём... что это под водой?", None, 0.2, ["shadow_under"]),
-        Ln("T", "Тень. Длиной в три автобуса.", None, 0.3, ["shadow_top"]),
-        Ln("T", "И тут во всём городе погас свет.", None, 0, ["blackout"])]),
+        Ln("T", "[excited] Ночью мы пошли на набережную. Снять светящуюся воду.", None, 0.15, ["embank", "glow_water"]),
+        Ln("T", "[whispers] Вода и правда светилась. Изнутри.", None, 0.4, ["glow_close"]),
+        Ln("L", "[scared] Тём... что это под водой?", None, 0.2, ["shadow_under"]),
+        Ln("T", "[whispers] Тень. Длиной в три автобуса.", None, 0.3, ["shadow_top"]),
+        Ln("T", "[nervous] И тут во всём городе погас свет.", None, 0, ["blackout"])]),
     dict(id="rise", pre=1.2, post=0.2, shots0=["ridge"], lines=[
-        Ln("T", "Из воды поднялся хребет.", None, 0.2, ["ridge"]),
-        Ln("T", "Потом голова. Размером с дом.", None, 2.6, ["head_rise", "roar"]),
-        Ln("T", "От его рёва лопнули все окна на набережной.", None, 0, ["glass"], meter=60)]),
+        Ln("T", "[scared] Из воды поднялся хребет.", None, 0.2, ["ridge"]),
+        Ln("T", "[terrified] Потом голова. Размером с дом.", None, 2.6, ["head_rise", "roar"]),
+        Ln("T", "[shouting] От его рёва лопнули все окна на набережной!", None, 0, ["glass"], meter=60)]),
     dict(id="panic", pre=0.6, post=0.2, shots0=["sirens"], lines=[
         Ln("T", "Завыли сирены.", None, 0.1, ["sirens"]),
-        Ln("T", "Люди бежали. Над водой зависли вертолёты.", None, 0.2, ["crowd", "helis"]),
-        Ln("T", "А потом треснул мост.", None, 0.6, ["bridge"], meter=45),
-        Ln("T", "Мама была на ночной смене. В больнице прямо у воды.", None, 0.2, ["phone_mom"]),
-        Ln("L", "Тём, ты куда?! Беги от него!", None, 0.2, ["lyoha_run"]),
-        Ln("T", "Я побежал. Не от него. К нему.", None, 0, ["run_to"], meter=30)]),
+        Ln("T", "[breathless] Люди бежали. Над водой зависли вертолёты.", None, 0.2, ["crowd", "helis"]),
+        Ln("T", "[shouting] А потом треснул мост!", None, 0.6, ["bridge"], meter=45),
+        Ln("T", "[panicked] Мама была на ночной смене. В больнице прямо у воды.", None, 0.2, ["phone_mom"]),
+        Ln("L", "[shouting] Тём, ты куда?! Беги от него!", None, 0.2, ["lyoha_run"]),
+        Ln("T", "[determined] Я побежал. Не от него. К нему.", None, 0, ["run_to"], meter=30)]),
     dict(id="twist", pre=0.3, post=0.3, lines=[
-        Ln("L", "Бро... по новостям второй объект. Он в три раза больше.", None, 0.3, ["radar"]),
+        Ln("L", "[scared] Бро... по новостям второй объект. Он в три раза больше.", None, 0.3, ["radar"]),
         Ln("T", "Он стоял по пояс в воде. Спиной к городу.", None, 0.2, ["back_view"]),
-        Ln("T", "Он не нападал. Он закрывал нас собой.", None, 0.3, ["shield"]),
-        Ln("T", "Он от чего-то убегал.", None, 0, ["shield_close"])]),
+        Ln("T", "[amazed] Он не нападал. Он закрывал нас собой.", None, 0.3, ["shield"]),
+        Ln("T", "[whispers] Он от чего-то убегал.", None, 0, ["shield_close"])]),
     dict(id="fight", pre=1.0, post=0.2, shots0=["boil"], lines=[
-        Ln("T", "Вода закипела.", None, 0.2, ["boil"]),
-        Ln("T", "Из глубины поднялось что-то тёмное. Без единого огонька.", None, 0.5, ["dark_rise", "dark_close"], meter=15),
-        Ln("T", "Он загорелся так ярко, что ночь стала днём.", None, 2.0, ["glow_max", "impact"]),
-        Ln("T", "Я закрыл маму собой.", None, 0, ["cover_mom"], meter=7)]),
+        Ln("T", "[scared] Вода закипела.", None, 0.2, ["boil"]),
+        Ln("T", "[terrified] Из глубины поднялось что-то тёмное. Без единого огонька.", None, 0.5, ["dark_rise", "dark_close"], meter=15),
+        Ln("T", "[shouting] Он загорелся так ярко, что ночь стала днём!", None, 2.0, ["glow_max", "impact"]),
+        Ln("T", "[crying] Я закрыл маму собой.", None, 0, ["cover_mom"], meter=7)]),
     dict(id="end", pre=1.3, post=0.0, shots0=["silence"], lines=[
-        Ln("T", "Потом стало тихо. Телефон снова пискнул.", None, 0.3, ["alert2"]),
-        Ln("T", "Я подошёл к окну.", None, 0.4, ["to_window"]),
-        Ln("T", "А там, во всё окно... был глаз.", None, 0.5, ["eye"]),
-        Ln("T", "Он смотрел на наш дом. И, кажется... просил помочь.", None, 0, ["eye_close"])]),
+        Ln("T", "[quietly] Потом стало тихо. Телефон снова пискнул.", None, 0.3, ["alert2"]),
+        Ln("T", "[whispers] Я подошёл к окну.", None, 0.4, ["to_window"]),
+        Ln("T", "[whispers] А там, во всё окно... был глаз.", None, 0.5, ["eye"]),
+        Ln("T", "[whispers] Он смотрел на наш дом. [sad] И, кажется... просил помочь.", None, 0, ["eye_close"])]),
 ]
 END_CUT_FRACTION = 1.0
 TAIL_BLACK = 0.8
 
-VOICE = {
-    "T":    dict(voice="en-US-BrianMultilingualNeural", rate="+26%", pitch="+25Hz", shift=1.0),
-    "L":    dict(voice="en-US-AndrewMultilingualNeural", rate="+22%", pitch="+0Hz", shift=1.0),
-    "L_wh": dict(voice="en-US-AndrewMultilingualNeural", rate="-8%", pitch="-5Hz", shift=0.92),
-    "N_wh": dict(voice="ru-RU-SvetlanaNeural", rate="+0%", pitch="-10Hz", shift=0.94),
-    "T_wh": dict(voice="en-US-BrianMultilingualNeural", rate="+5%", pitch="+20Hz", shift=1.0),
-    "R":    dict(voice="ru-RU-SvetlanaNeural", rate="+10%", pitch="+0Hz", shift=1.0),
-    "M":    dict(voice="ru-RU-SvetlanaNeural", rate="-5%", pitch="+0Hz", shift=0.98),
-    "D":    dict(voice="fr-FR-RemyMultilingualNeural", rate="-12%", pitch="-10Hz", shift=0.9),
+VOICE = {  # ElevenLabs eleven_v3: голоса из библиотеки (нативный русский)
+    "T":    dict(el="Uv3rf12Omd9Asyv54Bqw"),   # Тёма — Max (Alive and Emotional)
+    "T_wh": dict(el="Uv3rf12Omd9Asyv54Bqw"),
+    "L":    dict(el="lsAmGFzUYusakA482527"),   # Лёха — Andrey Permikin
+    "R":    dict(el="EDpEYNf6XIeKYRzYcx4I"),   # радио — Mariia
 }
 EDGE = os.environ.get("EDGE_TTS", "edge-tts")
 
@@ -132,23 +128,25 @@ def write_wav(p, x):
 # ---------------------------------------------------------------- TTS
 def synth(voice, text):
     v = VOICE[voice]
-    key = hashlib.md5(f"{voice}|{text}|{v}".encode()).hexdigest()[:12]
+    key = hashlib.md5(f"{voice}|{text}|{v}|v3".encode()).hexdigest()[:12]
     out = f"{BUILD}/tts/{voice}_{key}.wav"
     if not os.path.exists(out):
+        import urllib.request, ssl
         mp3 = out.replace(".wav", ".mp3")
-        env = dict(os.environ, SSL_CERT_FILE=os.environ.get("SSL_CERT_FILE", "/root/.ccr/ca-bundle.crt"))
-        cmd = [EDGE, "--voice", v["voice"], f"--rate={v['rate']}", f"--pitch={v['pitch']}", "--text", text, "--write-media", mp3]
-        if os.environ.get("HTTPS_PROXY"):
-            cmd[1:1] = ["--proxy", os.environ["HTTPS_PROXY"]]
-        for attempt in range(4):
-            r = subprocess.run(cmd, env=env, capture_output=True, text=True)
-            if r.returncode == 0 and os.path.getsize(mp3) > 1000:
+        body = json.dumps(dict(text=text, model_id="eleven_v3", voice_settings=dict(stability=0.5))).encode()
+        req = urllib.request.Request(f"https://api.elevenlabs.io/v1/text-to-speech/{v['el']}?output_format=mp3_44100_128", data=body,
+                                     headers={"Content-Type": "application/json", "xi-api-key": os.environ.get("ELEVEN_API_KEY", "proxy-injected")})
+        ctx = ssl.create_default_context(cafile=os.environ.get("SSL_CERT_FILE", "/root/.ccr/ca-bundle.crt"))
+        for attempt in range(3):
+            try:
+                with urllib.request.urlopen(req, context=ctx, timeout=120) as r:
+                    open(mp3, "wb").write(r.read())
                 break
+            except Exception as e:
+                err = e
         else:
-            raise RuntimeError(f"edge-tts failed for {voice}: {r.stderr[-300:]}")
-        p = v["shift"]
-        af = f"rubberband=pitch={p}:formant=preserved,aresample={SR}" if p != 1 else f"aresample={SR}"
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", mp3, "-af", af, "-ac", "1", out], check=True)
+            raise RuntimeError(f"ElevenLabs failed for {voice}: {err} {getattr(err, 'read', lambda: b'')()[:300]}")
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", mp3, "-af", f"aresample={SR}", "-ac", "1", out], check=True)
     x = read_wav(out)
     # обрезка тишины по краям
     idx = np.where(np.abs(x) > 0.01)[0]
@@ -159,9 +157,7 @@ def synth(voice, text):
         x = bp(x, 400, 3200); x = np.tanh(x * 3) * 0.6
         x = x + hp(rng.standard_normal(len(x)), 3000) * 0.02
     elif voice in ("L_wh", "N_wh", "T_wh"):
-        x = hp(x, 250) * 0.9
-        x = x + hp(lp(rng.standard_normal(len(x)), 7000), 2500) * np.abs(lp(np.abs(x), 30)) * 1.6
-        x = reverb(x, 0.9 if voice == "N_wh" else 0.5, 0.3 if voice == "N_wh" else 0.15)
+        x = reverb(hp(x, 120), 0.5, 0.12)
     elif voice == "M":
         x = reverb(bp(x, 200, 3500), 2.2, 0.55)  # издалека, из коридора
     elif voice == "D":
@@ -430,6 +426,8 @@ def crowd(d):
 
 # ---------------------------------------------------------------- ТАЙМЛАЙН
 def chunks_of(text):
+    import re
+    text = re.sub(r"\[[^\]]*\]\s*", "", text).strip()
     words, out, cur = text.split(), [], []
     for w in words:
         if w in ("—", "-") and out and not cur:
