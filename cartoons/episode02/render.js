@@ -12,6 +12,7 @@ async function page(browser) {
   await p.addScriptTag({ content: `window.TL=${JSON.stringify(TL)};` });
   await p.addScriptTag({ path: path.join(B, 'assets.js') });
   await p.addScriptTag({ path: path.join(__dirname, 'scenes.js') });
+  await p.addScriptTag({ path: path.join(__dirname, 'cover.js') });
   const fdir = path.join(__dirname, 'fonts');
   const face = (fam, file, w) => `@font-face{font-family:'${fam}';font-weight:${w};src:url(data:font/woff2;base64,${fs.readFileSync(path.join(fdir, file)).toString('base64')}) format('woff2');}`;
   const css = ['rubik-cyrillic-900', 'rubik-latin-900'].map(n => face('Rubik', n + '-normal.woff2', 900)).join('') +
