@@ -13,6 +13,7 @@ async function page(browser) {
   await p.addScriptTag({ path: path.join(B, 'assets.js') });
   await p.addScriptTag({ path: path.join(__dirname, 'scenes.js') });
   await p.addScriptTag({ path: path.join(__dirname, 'cover.js') });
+  await p.addScriptTag({ path: path.join(__dirname, 'avatars.js') });
   const fdir = path.join(__dirname, 'fonts');
   const face = (fam, file, w) => `@font-face{font-family:'${fam}';font-weight:${w};src:url(data:font/woff2;base64,${fs.readFileSync(path.join(fdir, file)).toString('base64')}) format('woff2');}`;
   const css = ['rubik-cyrillic-900', 'rubik-latin-900'].map(n => face('Rubik', n + '-normal.woff2', 900)).join('') +
@@ -29,6 +30,16 @@ async function shot(p, t, type = 'jpeg') {
 
 (async () => {
   const browser = await chromium.launch();
+  if (args.includes('--avatars')) {
+    const p = await page(browser);
+    await p.setViewportSize({ width: 1024, height: 1024 });
+    const out = path.join(__dirname, '..', 'avatars'); fs.mkdirSync(out, { recursive: true });
+    for (let i = 0; i < 10; i++) {
+      await p.evaluate(i => { document.getElementById('v').innerHTML = renderAvatar(i); }, i);
+      await p.screenshot({ path: path.join(out, `avatar_${String(i + 1).padStart(2, '0')}.png`), clip: { x: 0, y: 0, width: 1024, height: 1024 } });
+    }
+    await browser.close(); return;
+  }
   if (args.includes('--cover')) {
     const p = await page(browser);
     await p.evaluate(() => { document.getElementById('v').innerHTML = renderCover(); });

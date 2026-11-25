@@ -26,7 +26,7 @@ function char(p, o) {
   const tr = `translate(${o.x} ${o.y}) rotate(${o.rot || 0}) scale(${s}) translate(-512 -1030)`;
   if (o.back) return `<g transform="${tr}">${A[p + '_back']}</g>`;
   const breathe = 1 + Math.sin(o.t * 2.2 + (p === 'L' ? 1 : 0)) * 0.008;
-  const m = o.talk === false ? 0 : mouthAt(p, o.f);
+  const m = o.mouth ?? (o.talk === false ? 0 : mouthAt(p, o.f));
   const hr = (o.headRot || 0) + wob(o.t * .8, p === 'L' ? 3 : 0) * 1.5 + (m ? Math.sin(o.t * 9) * 1.2 : 0);
   const emo = o.emo || (p === 'T' ? 'neutral' : 'grin');
   const blink = blinkAt(o.t, p === 'L' ? 0.7 : 0) && emo !== 'stare' && emo !== 'terrified';
